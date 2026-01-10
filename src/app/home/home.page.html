@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      Gestão de Tarefas
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -9,12 +9,46 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
+      <ion-title size="large">Gestão de Tarefas</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <div id="container" class="ion-padding">
+    <h1>Bem-vindo!</h1>
+    <p>Escolha uma das opções abaixo para começar:</p>
+
+    <ion-list>
+      <ion-item button (click)="navegarParaCategorias()">
+        <ion-icon name="pricetags-outline" slot="start"></ion-icon>
+        <ion-label>
+          <h2>Categorias</h2>
+          <p>Gerir categorias de projetos</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item button (click)="navegarParaProjetos()">
+        <ion-icon name="folder-outline" slot="start"></ion-icon>
+        <ion-label>
+          <h2>Projetos</h2>
+          <p>Gerir projetos e tarefas</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item button (click)="navegarParaTarefas()">
+        <ion-icon name="list-outline" slot="start"></ion-icon>
+        <ion-label>
+          <h2>Tarefas</h2>
+          <p>Ver e gerir todas as tarefas</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item button (click)="navegarParaCalendario()">
+        <ion-icon name="calendar-outline" slot="start"></ion-icon>
+        <ion-label>
+          <h2>Calendário</h2>
+          <p>Visualizar tarefas por data</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
   </div>
 </ion-content>
