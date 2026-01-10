@@ -1,0 +1,7 @@
+{
+  "name": "Projeto_PM_temp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
