@@ -1,0 +1,25 @@
+ESTRUTURA RECOMENDADA PARA PROJETO MÓVEL
+==========================================
+
+Projeto_PM/
+│
+├── .gitignore              ✅ (já criado)
+├── README.md               ✅ (já criado)
+├── SETUP.md                ✅ (já criado)
+├── GUIA_GIT.md             ✅ (já criado)
+│
+├── src/                    (código fonte principal)
+│   ├── screens/           (telas da aplicação)
+│   ├── components/        (componentes reutilizáveis)
+│   ├── services/          (API, serviços)
+│   ├── utils/             (funções auxiliares)
+│   └── assets/            (imagens, fontes, etc.)
+│
+├── docs/                   (documentação adicional)
+│
+└── (ficheiros de config do framework escolhido)
+
+NOTAS:
+- Esta é uma estrutura genérica
+- Adapte conforme a tecnologia (React Native, Flutter, etc.)
+- Mantenha a organização para facilitar commits organizados
