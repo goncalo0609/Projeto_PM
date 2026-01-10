@@ -1,27 +1,34 @@
-#container {
-  text-align: center;
+// Estilos locais para a página Home
+// Os estilos globais já estão definidos em global.scss
 
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+#container {
+  text-align: left; // Alterado para left para melhor legibilidade dos itens
+  position: relative; // Alterado para relative para melhor layout
+  top: 0;
+  transform: none;
+  padding: 16px;
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+#container h1 {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--ion-text-color);
+  margin-bottom: 8px;
 }
 
 #container p {
   font-size: 16px;
   line-height: 22px;
-
-  color: #8c8c8c;
-
-  margin: 0;
+  color: var(--ion-color-medium);
+  margin-bottom: 20px;
 }
 
-#container a {
-  text-decoration: none;
+// Estilos para os ícones
+ion-icon {
+  font-size: 24px;
+}
+
+// Hover effect nos itens
+ion-item:hover {
+  --background: var(--ion-color-light);
 }

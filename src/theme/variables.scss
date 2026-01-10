@@ -1,2 +1,148 @@
 // For information on how to create your own theme, please refer to:
 // https://ionicframework.com/docs/theming/
+
+/**
+ * Cores Personalizadas da Aplicação
+ * CSS Custom Properties disponíveis globalmente
+ */
+
+// Cores Primárias
+:root {
+  // Cor principal da aplicação
+  --ion-color-primary: #3880ff;
+  --ion-color-primary-rgb: 56, 128, 255;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #3171e0;
+  --ion-color-primary-tint: #4c8dff;
+
+  // Cor Secundária
+  --ion-color-secondary: #3dc2ff;
+  --ion-color-secondary-rgb: 61, 194, 255;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #36abe0;
+  --ion-color-secondary-tint: #50c8ff;
+
+  // Cor de Sucesso
+  --ion-color-success: #2dd36f;
+  --ion-color-success-rgb: 45, 211, 111;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #28ba62;
+  --ion-color-success-tint: #42d77d;
+
+  // Cor de Aviso
+  --ion-color-warning: #ffc409;
+  --ion-color-warning-rgb: 255, 196, 9;
+  --ion-color-warning-contrast: #000000;
+  --ion-color-warning-contrast-rgb: 0, 0, 0;
+  --ion-color-warning-shade: #e0ac08;
+  --ion-color-warning-tint: #ffca22;
+
+  // Cor de Perigo/Erro
+  --ion-color-danger: #eb445a;
+  --ion-color-danger-rgb: 235, 68, 90;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #cf3c4f;
+  --ion-color-danger-tint: #ed576b;
+
+  // Cores Personalizadas para Categorias
+  --ion-color-escola: #9c27b0;
+  --ion-color-escola-rgb: 156, 39, 176;
+  --ion-color-escola-contrast: #ffffff;
+  --ion-color-escola-contrast-rgb: 255, 255, 255;
+  --ion-color-escola-shade: #89229c;
+  --ion-color-escola-tint: #a63db8;
+
+  --ion-color-trabalho: #ff5722;
+  --ion-color-trabalho-rgb: 255, 87, 34;
+  --ion-color-trabalho-contrast: #ffffff;
+  --ion-color-trabalho-contrast-rgb: 255, 255, 255;
+  --ion-color-trabalho-shade: #e04e1e;
+  --ion-color-trabalho-tint: #ff6838;
+
+  --ion-color-pessoal: #4caf50;
+  --ion-color-pessoal-rgb: 76, 175, 80;
+  --ion-color-pessoal-contrast: #ffffff;
+  --ion-color-pessoal-contrast-rgb: 255, 255, 255;
+  --ion-color-pessoal-shade: #439a46;
+  --ion-color-pessoal-tint: #5eb762;
+
+  // Cores para Estados de Tarefas
+  --ion-color-atraso: #f44336;
+  --ion-color-atraso-rgb: 244, 67, 54;
+  --ion-color-atraso-contrast: #ffffff;
+  --ion-color-atraso-contrast-rgb: 255, 255, 255;
+  --ion-color-atraso-shade: #d73b2f;
+  --ion-color-atraso-tint: #f55647;
+
+  --ion-color-proximo: #ff9800;
+  --ion-color-proximo-rgb: 255, 152, 0;
+  --ion-color-proximo-contrast: #000000;
+  --ion-color-proximo-contrast-rgb: 0, 0, 0;
+  --ion-color-proximo-shade: #e08600;
+  --ion-color-proximo-tint: #ffa21a;
+
+  // Cores de Background
+  --ion-background-color: #ffffff;
+  --ion-background-color-rgb: 255, 255, 255;
+
+  // Cores de Texto
+  --ion-text-color: #000000;
+  --ion-text-color-rgb: 0, 0, 0;
+
+  // Cores de Item
+  --ion-item-background: #ffffff;
+  --ion-item-background-activated: #f4f5f8;
+}
+
+/**
+ * Classes de Utilidade para Cores Personalizadas
+ * Permitem usar as cores criadas como classes do Ionic
+ */
+.ion-color-escola {
+  --ion-color-base: var(--ion-color-escola);
+  --ion-color-base-rgb: var(--ion-color-escola-rgb);
+  --ion-color-contrast: var(--ion-color-escola-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-escola-contrast-rgb);
+  --ion-color-shade: var(--ion-color-escola-shade);
+  --ion-color-tint: var(--ion-color-escola-tint);
+}
+
+.ion-color-trabalho {
+  --ion-color-base: var(--ion-color-trabalho);
+  --ion-color-base-rgb: var(--ion-color-trabalho-rgb);
+  --ion-color-contrast: var(--ion-color-trabalho-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-trabalho-contrast-rgb);
+  --ion-color-shade: var(--ion-color-trabalho-shade);
+  --ion-color-tint: var(--ion-color-trabalho-tint);
+}
+
+.ion-color-pessoal {
+  --ion-color-base: var(--ion-color-pessoal);
+  --ion-color-base-rgb: var(--ion-color-pessoal-rgb);
+  --ion-color-contrast: var(--ion-color-pessoal-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-pessoal-contrast-rgb);
+  --ion-color-shade: var(--ion-color-pessoal-shade);
+  --ion-color-tint: var(--ion-color-pessoal-tint);
+}
+
+.ion-color-atraso {
+  --ion-color-base: var(--ion-color-atraso);
+  --ion-color-base-rgb: var(--ion-color-atraso-rgb);
+  --ion-color-contrast: var(--ion-color-atraso-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-atraso-contrast-rgb);
+  --ion-color-shade: var(--ion-color-atraso-shade);
+  --ion-color-tint: var(--ion-color-atraso-tint);
+}
+
+.ion-color-proximo {
+  --ion-color-base: var(--ion-color-proximo);
+  --ion-color-base-rgb: var(--ion-color-proximo-rgb);
+  --ion-color-contrast: var(--ion-color-proximo-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-proximo-contrast-rgb);
+  --ion-color-shade: var(--ion-color-proximo-shade);
+  --ion-color-tint: var(--ion-color-proximo-tint);
+}

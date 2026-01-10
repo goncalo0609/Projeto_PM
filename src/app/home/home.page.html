@@ -17,37 +17,41 @@
     <h1>Bem-vindo!</h1>
     <p>Escolha uma das opções abaixo para começar:</p>
 
-    <ion-list>
-      <ion-item button (click)="navegarParaCategorias()">
-        <ion-icon name="pricetags-outline" slot="start"></ion-icon>
+    <ion-list class="custom-list">
+      <ion-item button (click)="navegarParaCategorias()" class="custom-list-item">
+        <ion-icon name="pricetags-outline" slot="start" color="primary"></ion-icon>
         <ion-label>
           <h2>Categorias</h2>
           <p>Gerir categorias de projetos</p>
         </ion-label>
+        <ion-badge slot="end" class="category-badge-escola">Nova</ion-badge>
       </ion-item>
 
-      <ion-item button (click)="navegarParaProjetos()">
-        <ion-icon name="folder-outline" slot="start"></ion-icon>
+      <ion-item button (click)="navegarParaProjetos()" class="custom-list-item">
+        <ion-icon name="folder-outline" slot="start" color="secondary"></ion-icon>
         <ion-label>
           <h2>Projetos</h2>
           <p>Gerir projetos e tarefas</p>
         </ion-label>
+        <ion-badge slot="end" class="category-badge-trabalho">Ativo</ion-badge>
       </ion-item>
 
-      <ion-item button (click)="navegarParaTarefas()">
-        <ion-icon name="list-outline" slot="start"></ion-icon>
+      <ion-item button (click)="navegarParaTarefas()" class="custom-list-item">
+        <ion-icon name="list-outline" slot="start" color="success"></ion-icon>
         <ion-label>
           <h2>Tarefas</h2>
           <p>Ver e gerir todas as tarefas</p>
         </ion-label>
+        <ion-badge slot="end" class="badge-atraso">3</ion-badge>
       </ion-item>
 
-      <ion-item button (click)="navegarParaCalendario()">
-        <ion-icon name="calendar-outline" slot="start"></ion-icon>
+      <ion-item button (click)="navegarParaCalendario()" class="custom-list-item">
+        <ion-icon name="calendar-outline" slot="start" color="warning"></ion-icon>
         <ion-label>
           <h2>Calendário</h2>
           <p>Visualizar tarefas por data</p>
         </ion-label>
+        <ion-badge slot="end" color="warning">Hoje</ion-badge>
       </ion-item>
     </ion-list>
   </div>

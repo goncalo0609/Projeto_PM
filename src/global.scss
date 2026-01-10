@@ -35,3 +35,211 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
+
+/**
+ * Estilos Globais Personalizados
+ * Aplicados em toda a aplicação
+ * Nota: variables.scss é importado automaticamente via angular.json
+ */
+
+/**
+ * Formatações Globais
+ */
+html {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/**
+ * Utilitários Personalizados
+ */
+
+// Espaçamentos personalizados
+.padding-custom {
+  padding: 16px;
+}
+
+.margin-top-custom {
+  margin-top: 20px;
+}
+
+.margin-bottom-custom {
+  margin-bottom: 20px;
+}
+
+// Classes para textos
+.text-center {
+  text-align: center;
+}
+
+.text-bold {
+  font-weight: bold;
+}
+
+.text-muted {
+  opacity: 0.6;
+}
+
+// Classes para indicadores de estado
+.badge-atraso {
+  --background: var(--ion-color-danger);
+  --color: var(--ion-color-danger-contrast);
+}
+
+.badge-proximo {
+  --background: var(--ion-color-warning);
+  --color: var(--ion-color-warning-contrast);
+}
+
+.badge-concluido {
+  --background: var(--ion-color-success);
+  --color: var(--ion-color-success-contrast);
+}
+
+// Estilos para cards personalizados
+.custom-card {
+  margin: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.custom-card-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--ion-color-light);
+}
+
+.custom-card-content {
+  padding: 16px;
+}
+
+// Estilos para listas
+.custom-list {
+  background: transparent;
+}
+
+.custom-list-item {
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --min-height: 56px;
+  border-bottom: 1px solid var(--ion-color-light);
+}
+
+// Estilos para botões personalizados
+.btn-full-width {
+  width: 100%;
+  margin: 8px 0;
+}
+
+.btn-icon {
+  --padding-start: 12px;
+  --padding-end: 12px;
+}
+
+// Estilos para inputs
+.custom-input {
+  --padding-start: 12px;
+  --padding-end: 12px;
+  border-radius: 8px;
+  margin: 8px 0;
+}
+
+// Estilos para separadores
+.custom-divider {
+  height: 1px;
+  background: var(--ion-color-light);
+  margin: 16px 0;
+}
+
+// Estilos para imagens
+.thumbnail {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.thumbnail-large {
+  width: 100%;
+  max-height: 200px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+// Classes para cores de categoria
+.category-badge-escola {
+  --background: var(--ion-color-escola);
+  --color: var(--ion-color-escola-contrast);
+}
+
+.category-badge-trabalho {
+  --background: var(--ion-color-trabalho);
+  --color: var(--ion-color-trabalho-contrast);
+}
+
+.category-badge-pessoal {
+  --background: var(--ion-color-pessoal);
+  --color: var(--ion-color-pessoal-contrast);
+}
+
+// Estilos para o container principal
+#container {
+  text-align: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 16px;
+}
+
+#container strong {
+  font-size: 20px;
+  line-height: 26px;
+}
+
+#container p {
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--ion-color-medium);
+  margin: 0;
+}
+
+// Estilos responsivos
+@media (max-width: 768px) {
+  .padding-custom {
+    padding: 12px;
+  }
+}
+
+// Animações personalizadas
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+// Estilos para dark mode (se necessário no futuro)
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ion-background-color: #121212;
+    --ion-background-color-rgb: 18, 18, 18;
+    --ion-text-color: #ffffff;
+    --ion-text-color-rgb: 255, 255, 255;
+    --ion-item-background: #1e1e1e;
+  }
+}
