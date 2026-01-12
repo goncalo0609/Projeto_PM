@@ -14,7 +14,51 @@
     </ion-toolbar>
   </ion-header>
 
-  <div class="ion-padding">
-    <p>Gestão de projetos será implementada aqui.</p>
+  <!-- Loading spinner enquanto carrega dados -->
+  <ion-spinner *ngIf="carregando" name="crescent" class="spinner-center"></ion-spinner>
+
+  <!-- Lista de projetos -->
+  <div *ngIf="!carregando">
+    <!-- Mensagem quando não há projetos -->
+    <div *ngIf="projetos.length === 0" class="ion-padding empty-state">
+      <ion-icon name="folder-outline" class="empty-icon"></ion-icon>
+      <h2>Nenhum projeto</h2>
+      <p>Adicione um novo projeto para começar a organizar as suas tarefas.</p>
+    </div>
+
+    <!-- Lista de projetos -->
+    <ion-list *ngIf="projetos.length > 0" class="custom-list">
+      <ion-item 
+        *ngFor="let projeto of projetos" 
+        class="custom-list-item projeto-item"
+        lines="full">
+        <ion-icon name="folder" slot="start" color="secondary"></ion-icon>
+        <ion-label>
+          <h2>{{ projeto.nome }}</h2>
+          <p>{{ obterNomeCategoria(projeto.categoriaId) }}</p>
+        </ion-label>
+        <ion-buttons slot="end">
+          <ion-button 
+            fill="clear" 
+            color="primary" 
+            (click)="editarProjeto(projeto)">
+            <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+          </ion-button>
+          <ion-button 
+            fill="clear" 
+            color="danger" 
+            (click)="confirmarEliminarProjeto(projeto)">
+            <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+    </ion-list>
   </div>
+
+  <!-- Botão flutuante para adicionar novo projeto -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="secondary" (click)="adicionarProjeto()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
