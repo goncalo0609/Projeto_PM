@@ -132,7 +132,7 @@ export class TarefasPage implements OnInit {
             if (data.titulo && data.titulo.trim() && data.dataLimite) {
               // Converte a data para formato ISO
               const dataLimiteISO = new Date(data.dataLimite + 'T23:59:59').toISOString();
-              await this.selecionarProjetoParaCriar(
+              await this.selecionarImagemECriar(
                 data.titulo.trim(),
                 data.descricao?.trim() || '',
                 dataLimiteISO
@@ -151,16 +151,59 @@ export class TarefasPage implements OnInit {
   }
 
   /**
-   * Abre um ActionSheet para selecionar o projeto antes de criar a tarefa
+   * Abre um ActionSheet para selecionar imagem (opcional) antes de criar a tarefa
    * @param titulo - Título da tarefa
    * @param descricao - Descrição da tarefa
    * @param dataLimite - Data limite da tarefa (formato ISO)
    */
-  async selecionarProjetoParaCriar(titulo: string, descricao: string, dataLimite: string) {
+  async selecionarImagemECriar(titulo: string, descricao: string, dataLimite: string) {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Adicionar imagem à tarefa?',
+      buttons: [
+        {
+          text: 'Adicionar Imagem',
+          icon: 'image-outline',
+          handler: async () => {
+            // Fecha o ActionSheet antes de abrir o seletor de imagem
+            await actionSheet.dismiss();
+            const imagem = await this.selecionarImagem();
+            if (imagem) {
+              await this.selecionarProjetoParaCriar(titulo, descricao, dataLimite, imagem);
+            } else {
+              // Se cancelou a seleção de imagem, oferece novamente
+              await this.selecionarImagemECriar(titulo, descricao, dataLimite);
+            }
+          }
+        },
+        {
+          text: 'Continuar sem Imagem',
+          handler: async () => {
+            await actionSheet.dismiss();
+            await this.selecionarProjetoParaCriar(titulo, descricao, dataLimite);
+          }
+        },
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        }
+      ]
+    });
+
+    await actionSheet.present();
+  }
+
+  /**
+   * Abre um ActionSheet para selecionar o projeto antes de criar a tarefa
+   * @param titulo - Título da tarefa
+   * @param descricao - Descrição da tarefa
+   * @param dataLimite - Data limite da tarefa (formato ISO)
+   * @param imagem - URL base64 da imagem (opcional)
+   */
+  async selecionarProjetoParaCriar(titulo: string, descricao: string, dataLimite: string, imagem?: string) {
     const buttons: any[] = this.projetos.map(proj => ({
       text: proj.nome,
       handler: async () => {
-        await this.criarTarefa(titulo, descricao, dataLimite, proj.id);
+        await this.criarTarefa(titulo, descricao, dataLimite, proj.id, imagem);
       }
     }));
 
@@ -183,8 +226,9 @@ export class TarefasPage implements OnInit {
    * @param descricao - Descrição da tarefa
    * @param dataLimite - Data limite (formato ISO)
    * @param projetoId - ID do projeto
+   * @param imagem - URL base64 da imagem (opcional)
    */
-  async criarTarefa(titulo: string, descricao: string, dataLimite: string, projetoId: string) {
+  async criarTarefa(titulo: string, descricao: string, dataLimite: string, projetoId: string, imagem?: string) {
     try {
       // Verifica se já existe uma tarefa com o mesmo título no mesmo projeto
       const existe = await this.tarefaService.existePorTitulo(titulo, projetoId);
@@ -197,7 +241,8 @@ export class TarefasPage implements OnInit {
         titulo: titulo,
         descricao: descricao,
         dataLimite: dataLimite,
-        projetoId: projetoId
+        projetoId: projetoId,
+        imagem: imagem
       });
       await this.carregarDados();
       await this.mostrarToast('Tarefa adicionada com sucesso', 'success');
@@ -263,12 +308,11 @@ export class TarefasPage implements OnInit {
             if (data.titulo && data.titulo.trim() && data.dataLimite) {
               // Converte a data para formato ISO
               const dataLimiteISO = new Date(data.dataLimite + 'T23:59:59').toISOString();
-              await this.selecionarProjetoParaEditar(
-                tarefa.id,
+              await this.selecionarImagemParaEditar(
+                tarefa,
                 data.titulo.trim(),
                 data.descricao?.trim() || '',
-                dataLimiteISO,
-                tarefa.projetoId
+                dataLimiteISO
               );
               return true;
             } else {
@@ -290,18 +334,20 @@ export class TarefasPage implements OnInit {
    * @param descricao - Nova descrição da tarefa
    * @param dataLimite - Nova data limite (formato ISO)
    * @param projetoIdAtual - ID do projeto atual da tarefa
+   * @param imagemAtual - URL base64 da imagem atual (opcional)
    */
   async selecionarProjetoParaEditar(
     tarefaId: string,
     titulo: string,
     descricao: string,
     dataLimite: string,
-    projetoIdAtual: string
+    projetoIdAtual: string,
+    imagemAtual?: string
   ) {
     const buttons: any[] = this.projetos.map(proj => ({
       text: proj.nome,
       handler: async () => {
-        await this.atualizarTarefa(tarefaId, titulo, descricao, dataLimite, proj.id);
+        await this.atualizarTarefa(tarefaId, titulo, descricao, dataLimite, proj.id, imagemAtual);
       }
     }));
 
@@ -319,28 +365,73 @@ export class TarefasPage implements OnInit {
   }
 
   /**
+   * Abre um ActionSheet para selecionar/alterar imagem antes de editar a tarefa
+   * @param tarefa - Tarefa a editar
+   * @param titulo - Novo título da tarefa
+   * @param descricao - Nova descrição da tarefa
+   * @param dataLimite - Nova data limite (formato ISO)
+   */
+  async selecionarImagemParaEditar(tarefa: Tarefa, titulo: string, descricao: string, dataLimite: string) {
+    const actionSheet = await this.actionSheetController.create({
+      header: tarefa.imagem ? 'Alterar imagem da tarefa?' : 'Adicionar imagem à tarefa?',
+      buttons: [
+        {
+          text: 'Adicionar/Alterar Imagem',
+          icon: 'image-outline',
+          handler: async () => {
+            await actionSheet.dismiss();
+            const imagem = await this.selecionarImagem();
+            if (imagem !== undefined) {
+              await this.selecionarProjetoParaEditar(tarefa.id, titulo, descricao, dataLimite, tarefa.projetoId, imagem);
+            } else {
+              // Se cancelou, oferece novamente
+              await this.selecionarImagemParaEditar(tarefa, titulo, descricao, dataLimite);
+            }
+          }
+        },
+        {
+          text: tarefa.imagem ? 'Remover Imagem' : 'Continuar sem Imagem',
+          icon: tarefa.imagem ? 'trash-outline' : undefined,
+          handler: async () => {
+            await actionSheet.dismiss();
+            await this.selecionarProjetoParaEditar(tarefa.id, titulo, descricao, dataLimite, tarefa.projetoId);
+          }
+        },
+        {
+          text: 'Manter Imagem Atual',
+          handler: async () => {
+            await actionSheet.dismiss();
+            await this.selecionarProjetoParaEditar(tarefa.id, titulo, descricao, dataLimite, tarefa.projetoId, tarefa.imagem);
+          }
+        },
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        }
+      ]
+    });
+
+    await actionSheet.present();
+  }
+
+  /**
    * Atualiza uma tarefa existente através do service
    * @param id - ID da tarefa a atualizar
    * @param titulo - Novo título
    * @param descricao - Nova descrição
    * @param dataLimite - Nova data limite (formato ISO)
    * @param projetoId - Novo ID do projeto
+   * @param imagem - Nova URL base64 da imagem (opcional, undefined para remover)
    */
   async atualizarTarefa(
     id: string,
     titulo: string,
     descricao: string,
     dataLimite: string,
-    projetoId: string
+    projetoId: string,
+    imagem?: string
   ) {
     try {
-      // Busca a tarefa atual para manter a imagem se existir
-      const tarefaAtual = await this.tarefaService.getById(id);
-      if (!tarefaAtual) {
-        await this.mostrarToast('Tarefa não encontrada', 'danger');
-        return;
-      }
-
       // Verifica se já existe outra tarefa com o mesmo título no mesmo projeto
       const existe = await this.tarefaService.existePorTitulo(titulo, projetoId, id);
       if (existe) {
@@ -354,7 +445,7 @@ export class TarefasPage implements OnInit {
         descricao: descricao,
         dataLimite: dataLimite,
         projetoId: projetoId,
-        imagem: tarefaAtual.imagem
+        imagem: imagem
       };
 
       const sucesso = await this.tarefaService.update(tarefaAtualizada);
@@ -413,6 +504,62 @@ export class TarefasPage implements OnInit {
       console.error('Erro ao eliminar tarefa:', error);
       await this.mostrarToast('Erro ao eliminar tarefa', 'danger');
     }
+  }
+
+  /**
+   * Seleciona uma imagem do dispositivo e converte para base64
+   * @returns Promise<string | undefined> - URL base64 da imagem ou undefined se cancelado
+   */
+  async selecionarImagem(): Promise<string | undefined> {
+    return new Promise((resolve) => {
+      // Cria um input file dinâmico
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+      input.style.display = 'none';
+
+      input.onchange = (event: Event) => {
+        const target = event.target as HTMLInputElement;
+        const file = target.files?.[0];
+        
+        if (file) {
+          // Verifica o tamanho do arquivo (máximo 5MB)
+          if (file.size > 5 * 1024 * 1024) {
+            this.mostrarToast('Imagem muito grande. Máximo 5MB.', 'warning');
+            resolve(undefined);
+            return;
+          }
+
+          // Converte para base64
+          const reader = new FileReader();
+          reader.onload = (e: ProgressEvent<FileReader>) => {
+            const base64 = e.target?.result as string;
+            resolve(base64);
+          };
+          reader.onerror = () => {
+            this.mostrarToast('Erro ao processar imagem', 'danger');
+            resolve(undefined);
+          };
+          reader.readAsDataURL(file);
+        } else {
+          resolve(undefined);
+        }
+        
+        // Remove o input do DOM
+        document.body.removeChild(input);
+      };
+
+      input.oncancel = () => {
+        resolve(undefined);
+        if (document.body.contains(input)) {
+          document.body.removeChild(input);
+        }
+      };
+
+      // Adiciona o input ao DOM e aciona o clique
+      document.body.appendChild(input);
+      input.click();
+    });
   }
 
   /**

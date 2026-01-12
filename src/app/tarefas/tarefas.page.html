@@ -33,7 +33,14 @@
         class="custom-list-item tarefa-item"
         [class.tarefa-atraso]="tarefa.emAtraso"
         lines="full">
-        <ion-icon name="document-text" slot="start" color="success"></ion-icon>
+        <!-- Ícone ou imagem da tarefa -->
+        <div *ngIf="tarefa.imagem; else iconDefault" slot="start" class="tarefa-imagem-container">
+          <img [src]="tarefa.imagem" alt="Imagem da tarefa" class="tarefa-imagem" />
+        </div>
+        <ng-template #iconDefault>
+          <ion-icon name="document-text" slot="start" color="success"></ion-icon>
+        </ng-template>
+        
         <ion-label>
           <h2>{{ tarefa.titulo }}</h2>
           <p *ngIf="tarefa.descricao">{{ tarefa.descricao }}</p>
