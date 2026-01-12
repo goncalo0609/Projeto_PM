@@ -1,0 +1,397 @@
+/**
+ * Animações e Transições
+ * Melhora a UI/UX com animações suaves e micro-interações
+ */
+
+// Variáveis de timing para animações
+$animation-fast: 0.15s;
+$animation-normal: 0.3s;
+$animation-slow: 0.5s;
+$easing-standard: cubic-bezier(0.4, 0.0, 0.2, 1);
+$easing-decelerate: cubic-bezier(0.0, 0.0, 0.2, 1);
+$easing-accelerate: cubic-bezier(0.4, 0.0, 1, 1);
+
+/**
+ * Animações de Entrada (Fade In)
+ */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/**
+ * Animações de Scale
+ */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes scaleUp {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.05);
+  }
+}
+
+/**
+ * Animações de Loading
+ */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+/**
+ * Animações de Shake (para erros)
+ */
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-5px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(5px);
+  }
+}
+
+/**
+ * Classes de Animação
+ */
+.animate-fade-in {
+  animation: fadeIn $animation-normal $easing-standard;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp $animation-normal $easing-decelerate;
+}
+
+.animate-fade-in-down {
+  animation: fadeInDown $animation-normal $easing-decelerate;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight $animation-normal $easing-decelerate;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft $animation-normal $easing-decelerate;
+}
+
+.animate-scale-in {
+  animation: scaleIn $animation-fast $easing-decelerate;
+}
+
+.animate-pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.animate-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+/**
+ * Transições Suaves Globais
+ */
+* {
+  transition-property: background-color, color, border-color, transform, opacity, box-shadow;
+  transition-duration: $animation-fast;
+  transition-timing-function: $easing-standard;
+}
+
+/**
+ * Transições para Elementos Interativos
+ */
+ion-item,
+ion-button,
+button,
+a {
+  transition: all $animation-fast $easing-standard;
+  
+  &:active {
+    transform: scale(0.98);
+    transition-duration: $animation-fast;
+  }
+}
+
+/**
+ * Animações de Hover (para desktop)
+ */
+@media (hover: hover) {
+  ion-item:hover {
+    --background: var(--ion-color-light);
+    transform: translateX(4px);
+  }
+
+  ion-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  .custom-list-item:hover {
+    --background: var(--ion-color-light);
+    transform: translateX(4px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/**
+ * Animações de Entrada para Listas (Stagger)
+ */
+.custom-list-item {
+  animation: fadeInUp $animation-normal $easing-decelerate;
+  animation-fill-mode: both;
+
+  &:nth-child(1) {
+    animation-delay: 0.05s;
+  }
+
+  &:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+
+  &:nth-child(3) {
+    animation-delay: 0.15s;
+  }
+
+  &:nth-child(4) {
+    animation-delay: 0.2s;
+  }
+
+  &:nth-child(5) {
+    animation-delay: 0.25s;
+  }
+
+  &:nth-child(6) {
+    animation-delay: 0.3s;
+  }
+}
+
+/**
+ * Animações para Badges
+ */
+ion-badge {
+  animation: scaleIn $animation-fast $easing-decelerate;
+  transition: transform $animation-fast $easing-standard;
+
+  &:active {
+    transform: scale(1.1);
+  }
+}
+
+/**
+ * Animações para Ícones
+ */
+ion-icon {
+  transition: transform $animation-fast $easing-standard, color $animation-fast $easing-standard;
+
+  &:active {
+    transform: scale(1.2);
+  }
+}
+
+/**
+ * Animações para Cards
+ */
+.custom-card {
+  animation: fadeInUp $animation-normal $easing-decelerate;
+  transition: transform $animation-fast $easing-standard, box-shadow $animation-fast $easing-standard;
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+/**
+ * Animações para Loading Spinner
+ */
+ion-spinner {
+  animation: spin 1s linear infinite;
+}
+
+/**
+ * Animações para Empty States
+ */
+.empty-state {
+  animation: fadeIn $animation-slow $easing-decelerate;
+
+  .empty-icon {
+    animation: pulse 2s ease-in-out infinite;
+  }
+}
+
+/**
+ * Animações para Modals/Overlays
+ */
+.detalhes-overlay {
+  animation: fadeIn $animation-normal $easing-decelerate;
+}
+
+.detalhes-painel {
+  animation: slideInUp $animation-normal $easing-decelerate;
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/**
+ * Animações para Formulários
+ */
+ion-input,
+ion-textarea,
+ion-select {
+  transition: border-color $animation-fast $easing-standard, box-shadow $animation-fast $easing-standard;
+
+  &.ng-invalid.ng-touched {
+    animation: shake 0.5s ease-in-out;
+  }
+}
+
+/**
+ * Animações para Tabs/Segments
+ */
+ion-segment-button {
+  transition: all $animation-fast $easing-standard;
+
+  &.segment-button-checked {
+    transform: scale(1.05);
+  }
+}
+
+/**
+ * Animações para Calendário
+ */
+.calendario-dia {
+  transition: all $animation-fast $easing-standard;
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+/**
+ * Animações de Ripple Effect (para touch)
+ */
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/**
+ * Smooth Scrolling
+ */
+ion-content {
+  scroll-behavior: smooth;
+}
+
+/**
+ * Animações de Skeleton Loading (para quando carrega dados)
+ */
+@keyframes skeleton-loading {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200px 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+}

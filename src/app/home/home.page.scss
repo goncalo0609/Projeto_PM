@@ -28,7 +28,25 @@ ion-icon {
   font-size: 24px;
 }
 
-// Hover effect nos itens
-ion-item:hover {
-  --background: var(--ion-color-light);
+// Hover effect nos itens (desktop)
+@media (hover: hover) {
+  ion-item:hover {
+    --background: var(--ion-color-light);
+    transform: translateX(4px);
+  }
+}
+
+// Animação de entrada para o container
+#container {
+  animation: fadeInUp 0.4s ease-out;
+}
+
+// Animação para o título
+#container h1 {
+  animation: fadeInDown 0.5s ease-out;
+}
+
+// Animação para o parágrafo
+#container p {
+  animation: fadeIn 0.6s ease-out;
 }

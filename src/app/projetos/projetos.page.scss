@@ -61,35 +61,38 @@
   }
 
   // Hover effect (em dispositivos com rato)
-  &:hover {
-    --background: var(--ion-color-light);
+  @media (hover: hover) {
+    &:hover {
+      --background: var(--ion-color-light);
+      transform: translateX(4px);
+      transition: all 0.2s ease;
+    }
+  }
+
+  // Animação de entrada com stagger
+  animation: fadeInUp 0.3s ease-out;
+  animation-fill-mode: both;
+
+  @for $i from 1 through 10 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.05}s;
+    }
   }
 }
 
-// Estilos para o botÃ£o flutuante
+// Estilos para o botão flutuante
 ion-fab-button {
   --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:active {
+    transform: scale(0.95);
+  }
 }
 
-// Ajustes de espaÃ§amento da lista
+// Ajustes de espaçamento da lista
 .custom-list {
   margin-top: 8px;
-}
-
-// AnimaÃ§Ã£o suave para os itens
-.projeto-item {
-  animation: fadeIn 0.3s ease-in;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 // Container para o filtro com scroll horizontal
 .filtro-container {

@@ -42,6 +42,9 @@
  * Nota: variables.scss é importado automaticamente via angular.json
  */
 
+/* Importar animações e transições */
+@import './theme/animations.scss';
+
 /**
  * Fontes Customizadas
  * Define as fontes personalizadas da aplicação

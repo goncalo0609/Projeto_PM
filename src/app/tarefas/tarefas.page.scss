@@ -111,8 +111,23 @@
   }
 
   // Hover effect (em dispositivos com rato)
-  &:hover {
-    --background: var(--ion-color-light);
+  @media (hover: hover) {
+    &:hover {
+      --background: var(--ion-color-light);
+      transform: translateX(4px);
+      transition: all 0.2s ease;
+    }
+  }
+
+  // Animação de entrada
+  animation: fadeInUp 0.3s ease-out;
+  animation-fill-mode: both;
+
+  // Stagger animation para múltiplos itens
+  @for $i from 1 through 10 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.05}s;
+    }
   }
 
   // Estilo especial para tarefas em atraso
