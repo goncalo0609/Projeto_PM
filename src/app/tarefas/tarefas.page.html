@@ -4,6 +4,11 @@
       <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
     <ion-title>Tarefas</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="selecionarOrdenacao()">
+        <ion-icon slot="icon-only" name="swap-vertical-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -27,9 +32,9 @@
     </div>
 
     <!-- Lista de tarefas -->
-    <ion-list *ngIf="tarefas.length > 0" class="custom-list">
+    <ion-list *ngIf="tarefasOrdenadas.length > 0" class="custom-list">
       <ion-item 
-        *ngFor="let tarefa of tarefas" 
+        *ngFor="let tarefa of tarefasOrdenadas" 
         class="custom-list-item tarefa-item"
         [class.tarefa-atraso]="tarefa.emAtraso"
         lines="full">

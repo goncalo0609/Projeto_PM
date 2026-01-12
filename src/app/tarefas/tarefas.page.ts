@@ -19,11 +19,17 @@ export class TarefasPage implements OnInit {
   /** Array com todas as tarefas */
   tarefas: Tarefa[] = [];
 
+  /** Array com tarefas ordenadas (exibidas) */
+  tarefasOrdenadas: Tarefa[] = [];
+
   /** Array com todos os projetos */
   projetos: Projeto[] = [];
 
   /** Flag para indicar se está a carregar dados */
   carregando = false;
+
+  /** Critério de ordenação atual */
+  ordenacao: 'dataLimite' | 'titulo' | 'projeto' | 'emAtraso' = 'dataLimite';
 
   constructor(
     private tarefaService: TarefaService,
@@ -48,6 +54,7 @@ export class TarefasPage implements OnInit {
       this.carregando = true;
       this.projetos = await this.projetoService.getAll();
       this.tarefas = await this.tarefaService.getAll();
+      this.aplicarOrdenacao();
     } catch (error) {
       console.error('Erro ao carregar dados:', error);
       await this.mostrarToast('Erro ao carregar tarefas', 'danger');
@@ -64,6 +71,103 @@ export class TarefasPage implements OnInit {
   obterNomeProjeto(projetoId: string): string {
     const projeto = this.projetos.find(proj => proj.id === projetoId);
     return projeto ? projeto.nome : 'Sem projeto';
+  }
+
+  /**
+   * Abre um ActionSheet para selecionar o critério de ordenação
+   */
+  async selecionarOrdenacao() {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Ordenar tarefas por',
+      buttons: [
+        {
+          text: 'Data Limite',
+          icon: 'calendar-outline',
+          handler: () => {
+            this.ordenacao = 'dataLimite';
+            this.aplicarOrdenacao();
+          }
+        },
+        {
+          text: 'Título',
+          icon: 'text-outline',
+          handler: () => {
+            this.ordenacao = 'titulo';
+            this.aplicarOrdenacao();
+          }
+        },
+        {
+          text: 'Projeto',
+          icon: 'folder-outline',
+          handler: () => {
+            this.ordenacao = 'projeto';
+            this.aplicarOrdenacao();
+          }
+        },
+        {
+          text: 'Em Atraso (Primeiro)',
+          icon: 'warning-outline',
+          handler: () => {
+            this.ordenacao = 'emAtraso';
+            this.aplicarOrdenacao();
+          }
+        },
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        }
+      ]
+    });
+
+    await actionSheet.present();
+  }
+
+  /**
+   * Aplica a ordenação às tarefas
+   */
+  aplicarOrdenacao() {
+    const tarefasCopia = [...this.tarefas];
+
+    switch (this.ordenacao) {
+      case 'dataLimite':
+        tarefasCopia.sort((a, b) => {
+          const dataA = new Date(a.dataLimite).getTime();
+          const dataB = new Date(b.dataLimite).getTime();
+          return dataA - dataB; // Ordem crescente (mais antigas primeiro)
+        });
+        break;
+
+      case 'titulo':
+        tarefasCopia.sort((a, b) => {
+          return a.titulo.localeCompare(b.titulo, 'pt', { sensitivity: 'base' });
+        });
+        break;
+
+      case 'projeto':
+        tarefasCopia.sort((a, b) => {
+          const nomeProjetoA = this.obterNomeProjeto(a.projetoId);
+          const nomeProjetoB = this.obterNomeProjeto(b.projetoId);
+          return nomeProjetoA.localeCompare(nomeProjetoB, 'pt', { sensitivity: 'base' });
+        });
+        break;
+
+      case 'emAtraso':
+        tarefasCopia.sort((a, b) => {
+          // Tarefas em atraso primeiro (true vem antes de false)
+          if (a.emAtraso && !b.emAtraso) return -1;
+          if (!a.emAtraso && b.emAtraso) return 1;
+          // Se ambas têm o mesmo status de atraso, ordenar por data limite
+          const dataA = new Date(a.dataLimite).getTime();
+          const dataB = new Date(b.dataLimite).getTime();
+          return dataA - dataB;
+        });
+        break;
+
+      default:
+        break;
+    }
+
+    this.tarefasOrdenadas = tarefasCopia;
   }
 
   /**
