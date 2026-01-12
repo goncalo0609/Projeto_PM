@@ -611,6 +611,156 @@ export class TarefasPage implements OnInit {
   }
 
   /**
+   * Abre um ActionSheet para escolher ação (editar, mover, eliminar)
+   * @param tarefa - Tarefa para a qual mostrar as opções
+   */
+  async mostrarOpcoesTarefa(tarefa: Tarefa) {
+    const actionSheet = await this.actionSheetController.create({
+      header: tarefa.titulo,
+      buttons: [
+        {
+          text: 'Editar',
+          icon: 'create-outline',
+          handler: () => {
+            this.editarTarefa(tarefa);
+          }
+        },
+        {
+          text: 'Mover para outro projeto',
+          icon: 'arrow-forward-circle-outline',
+          handler: () => {
+            this.moverTarefaParaProjeto(tarefa);
+          }
+        },
+        {
+          text: 'Eliminar',
+          icon: 'trash-outline',
+          role: 'destructive',
+          handler: () => {
+            this.confirmarEliminarTarefa(tarefa);
+          }
+        },
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        }
+      ]
+    });
+
+    await actionSheet.present();
+  }
+
+  /**
+   * Abre um ActionSheet para selecionar o projeto de destino para mover a tarefa
+   * @param tarefa - Tarefa a mover
+   */
+  async moverTarefaParaProjeto(tarefa: Tarefa) {
+    if (this.projetos.length <= 1) {
+      await this.mostrarToast('Não há outros projetos disponíveis', 'warning');
+      return;
+    }
+
+    // Filtra projetos excluindo o projeto atual da tarefa
+    const projetosDisponiveis = this.projetos.filter(proj => proj.id !== tarefa.projetoId);
+
+    if (projetosDisponiveis.length === 0) {
+      await this.mostrarToast('Não há outros projetos disponíveis', 'warning');
+      return;
+    }
+
+    const buttons: any[] = projetosDisponiveis.map(proj => ({
+      text: proj.nome,
+      handler: async () => {
+        await this.confirmarMoverTarefa(tarefa, proj.id);
+      }
+    }));
+
+    buttons.push({
+      text: 'Cancelar',
+      role: 'cancel'
+    });
+
+    const actionSheet = await this.actionSheetController.create({
+      header: `Mover "${tarefa.titulo}" para qual projeto?`,
+      buttons: buttons
+    });
+
+    await actionSheet.present();
+  }
+
+  /**
+   * Confirma e executa a movimentação da tarefa para outro projeto
+   * @param tarefa - Tarefa a mover
+   * @param novoProjetoId - ID do projeto de destino
+   */
+  async confirmarMoverTarefa(tarefa: Tarefa, novoProjetoId: string) {
+    const nomeProjetoAtual = this.obterNomeProjeto(tarefa.projetoId);
+    const nomeNovoProjeto = this.obterNomeProjeto(novoProjetoId);
+
+    const alert = await this.alertController.create({
+      header: 'Confirmar Movimentação',
+      message: `Tem certeza que deseja mover a tarefa "${tarefa.titulo}" do projeto "${nomeProjetoAtual}" para o projeto "${nomeNovoProjeto}"?`,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Mover',
+          handler: async () => {
+            await this.executarMoverTarefa(tarefa.id, novoProjetoId, tarefa.imagem);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  /**
+   * Executa a movimentação da tarefa para outro projeto
+   * @param tarefaId - ID da tarefa a mover
+   * @param novoProjetoId - ID do projeto de destino
+   * @param imagem - Imagem da tarefa (para manter)
+   */
+  async executarMoverTarefa(tarefaId: string, novoProjetoId: string, imagem?: string) {
+    try {
+      // Busca a tarefa atual
+      const tarefaAtual = await this.tarefaService.getById(tarefaId);
+      if (!tarefaAtual) {
+        await this.mostrarToast('Tarefa não encontrada', 'danger');
+        return;
+      }
+
+      // Verifica se já existe outra tarefa com o mesmo título no novo projeto
+      const existe = await this.tarefaService.existePorTitulo(tarefaAtual.titulo, novoProjetoId, tarefaId);
+      if (existe) {
+        await this.mostrarToast('Já existe uma tarefa com esse título no projeto de destino', 'warning');
+        return;
+      }
+
+      // Atualiza a tarefa com o novo projetoId
+      const tarefaAtualizada: Tarefa = {
+        ...tarefaAtual,
+        projetoId: novoProjetoId,
+        imagem: imagem
+      };
+
+      const sucesso = await this.tarefaService.update(tarefaAtualizada);
+      if (sucesso) {
+        await this.carregarDados();
+        const nomeNovoProjeto = this.obterNomeProjeto(novoProjetoId);
+        await this.mostrarToast(`Tarefa movida para "${nomeNovoProjeto}"`, 'success');
+      } else {
+        await this.mostrarToast('Erro ao mover tarefa', 'danger');
+      }
+    } catch (error) {
+      console.error('Erro ao mover tarefa:', error);
+      await this.mostrarToast('Erro ao mover tarefa', 'danger');
+    }
+  }
+
+  /**
    * Seleciona uma imagem do dispositivo e converte para base64
    * @returns Promise<string | undefined> - URL base64 da imagem ou undefined se cancelado
    */
