@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 
 <head>
   <meta charset="utf-8" />
-  <title>Ionic App</title>
+  <title>Projeto PM</title>
 
   <base href="/" />
 
@@ -12,11 +12,19 @@
   <meta name="format-detection" content="telephone=no" />
   <meta name="msapplication-tap-highlight" content="no" />
 
-  <link rel="icon" type="image/png" href="assets/icon/favicon.png" />
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/icon/icon.png" />
+  <link rel="apple-touch-icon" href="assets/icon/icon.png" />
 
-  <!-- add to homescreen for ios -->
+  <!-- PWA / Web App -->
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Projeto PM" />
+  <meta name="theme-color" content="#3880ff" />
+
+  <!-- Splash Screen (será gerado automaticamente pelo cordova-res) -->
+  <link rel="apple-touch-startup-image" href="assets/splash/apple-splash-2048-2732.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" />
 </head>
 
 <body>
