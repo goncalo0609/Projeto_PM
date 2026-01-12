@@ -6,3 +6,4 @@ export { CategoriaService } from './categoria.service';
 export { ProjetoService } from './projeto.service';
 export { TarefaService } from './tarefa.service';
 export { NotificacaoService } from './notificacao.service';
+export { I18nService } from './i18n.service';

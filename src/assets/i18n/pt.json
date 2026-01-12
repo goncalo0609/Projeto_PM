@@ -1,0 +1,151 @@
+{
+  "app": {
+    "title": "Gestão de Tarefas"
+  },
+  "common": {
+    "cancelar": "Cancelar",
+    "continuar": "Continuar",
+    "adicionar": "Adicionar",
+    "editar": "Editar",
+    "eliminar": "Eliminar",
+    "guardar": "Guardar",
+    "fechar": "Fechar",
+    "verDetalhes": "Ver Detalhes",
+    "todos": "Todos"
+  },
+  "home": {
+    "titulo": "Bem-vindo!",
+    "subtitulo": "Escolha uma das opções abaixo para começar:",
+    "categorias": {
+      "titulo": "Categorias",
+      "descricao": "Gerir categorias de projetos",
+      "badge": "Nova"
+    },
+    "projetos": {
+      "titulo": "Projetos",
+      "descricao": "Gerir projetos e tarefas",
+      "badge": "Ativo"
+    },
+    "tarefas": {
+      "titulo": "Tarefas",
+      "descricao": "Ver e gerir todas as tarefas"
+    },
+    "calendario": {
+      "titulo": "Calendário",
+      "descricao": "Visualizar tarefas por data",
+      "badge": "Hoje"
+    }
+  },
+  "categorias": {
+    "titulo": "Categorias",
+    "nova": "Nova Categoria",
+    "editar": "Editar Categoria",
+    "eliminar": "Confirmar Eliminação",
+    "eliminarMensagem": "Tem certeza que deseja eliminar a categoria \"{nome}\"?",
+    "placeholderNome": "Nome da categoria",
+    "nenhuma": "Nenhuma categoria",
+    "mensagemVazia": "Adicione uma nova categoria para começar a organizar os seus projetos.",
+    "sucesso": {
+      "criada": "Categoria criada com sucesso",
+      "atualizada": "Categoria atualizada com sucesso",
+      "eliminada": "Categoria eliminada com sucesso"
+    },
+    "erro": {
+      "nomeVazio": "Por favor, insira um nome válido",
+      "nomeDuplicado": "Já existe uma categoria com esse nome",
+      "erroGenerico": "Erro ao processar a categoria"
+    }
+  },
+  "projetos": {
+    "titulo": "Projetos",
+    "novo": "Novo Projeto",
+    "editar": "Editar Projeto",
+    "eliminar": "Confirmar Eliminação",
+    "eliminarMensagem": "Tem certeza que deseja eliminar o projeto \"{nome}\"?",
+    "placeholderNome": "Nome do projeto",
+    "selecionarCategoria": "Selecione a categoria",
+    "nenhum": "Nenhum projeto",
+    "nenhumFiltrado": "Nenhum projeto nesta categoria",
+    "mensagemVazia": "Adicione um novo projeto para começar a organizar as suas tarefas.",
+    "mensagemVaziaFiltrado": "Não há projetos na categoria selecionada.",
+    "sucesso": {
+      "criado": "Projeto criado com sucesso",
+      "atualizado": "Projeto atualizado com sucesso",
+      "eliminado": "Projeto eliminado com sucesso"
+    },
+    "erro": {
+      "nomeVazio": "Por favor, insira um nome válido",
+      "nomeDuplicado": "Já existe um projeto com esse nome nesta categoria",
+      "categoriaObrigatoria": "Crie uma categoria primeiro",
+      "erroGenerico": "Erro ao processar o projeto"
+    }
+  },
+  "tarefas": {
+    "titulo": "Tarefas",
+    "nova": "Nova Tarefa",
+    "editar": "Editar Tarefa",
+    "eliminar": "Confirmar Eliminação",
+    "eliminarMensagem": "Tem certeza que deseja eliminar a tarefa \"{titulo}\"?",
+    "placeholderTitulo": "Título da tarefa",
+    "placeholderDescricao": "Descrição da tarefa (opcional)",
+    "placeholderDataLimite": "Data limite",
+    "nenhuma": "Nenhuma tarefa",
+    "mensagemVazia": "Adicione uma nova tarefa para começar a organizar o seu trabalho.",
+    "emAtraso": "Em Atraso",
+    "semDescricao": "Sem descrição",
+    "semProjeto": "Sem projeto",
+    "ordenacao": {
+      "titulo": "Ordenar tarefas por",
+      "dataLimite": "Data Limite",
+      "titulo": "Título",
+      "projeto": "Projeto",
+      "emAtraso": "Em Atraso (Primeiro)"
+    },
+    "movimentacao": {
+      "titulo": "Mover Tarefa",
+      "mensagem": "Selecione o projeto de destino para a tarefa \"{titulo}\"",
+      "selecionarProjeto": "Selecione o projeto"
+    },
+    "sucesso": {
+      "criada": "Tarefa criada com sucesso",
+      "atualizada": "Tarefa atualizada com sucesso",
+      "eliminada": "Tarefa eliminada com sucesso",
+      "movida": "Tarefa movida com sucesso"
+    },
+    "erro": {
+      "projetoObrigatorio": "Crie um projeto primeiro",
+      "camposObrigatorios": "Por favor, preencha título e data limite",
+      "erroGenerico": "Erro ao processar a tarefa"
+    }
+  },
+  "calendario": {
+    "titulo": "Calendário",
+    "detalhes": {
+      "titulo": "Detalhes da Tarefa",
+      "tarefaAtraso": "⚠ Tarefa em atraso"
+    },
+    "diasSemana": {
+      "domingo": "Dom",
+      "segunda": "Seg",
+      "terca": "Terça",
+      "quarta": "Qua",
+      "quinta": "Qui",
+      "sexta": "Sex",
+      "sabado": "Sáb"
+    },
+    "meses": {
+      "janeiro": "Janeiro",
+      "fevereiro": "Fevereiro",
+      "marco": "Março",
+      "abril": "Abril",
+      "maio": "Maio",
+      "junho": "Junho",
+      "julho": "Julho",
+      "agosto": "Agosto",
+      "setembro": "Setembro",
+      "outubro": "Outubro",
+      "novembro": "Novembro",
+      "dezembro": "Dezembro"
+    }
+  }
+}
