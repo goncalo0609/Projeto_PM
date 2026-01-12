@@ -32,7 +32,7 @@
         *ngFor="let categoria of categorias" 
         class="custom-list-item categoria-item"
         lines="full">
-        <ion-icon name="pricetag" slot="start" color="primary"></ion-icon>
+        <ion-icon name="pricetag-outline" slot="start" color="primary"></ion-icon>
         <ion-label>
           <h2>{{ categoria.nome }}</h2>
         </ion-label>
@@ -57,7 +57,7 @@
   <!-- Botão flutuante para adicionar nova categoria -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button color="primary" (click)="adicionarCategoria()">
-      <ion-icon name="add"></ion-icon>
+      <ion-icon name="add-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 </ion-content>

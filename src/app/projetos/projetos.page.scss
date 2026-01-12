@@ -60,6 +60,10 @@
     margin-left: 8px;
   }
 
+  // Animação de entrada com stagger
+  animation: fadeInUp 0.3s ease-out;
+  animation-fill-mode: both;
+
   // Hover effect (em dispositivos com rato)
   @media (hover: hover) {
     &:hover {
@@ -68,10 +72,6 @@
       transition: all 0.2s ease;
     }
   }
-
-  // Animação de entrada com stagger
-  animation: fadeInUp 0.3s ease-out;
-  animation-fill-mode: both;
 
   @for $i from 1 through 10 {
     &:nth-child(#{$i}) {

@@ -54,7 +54,7 @@
           [class.dia-feriado]="dia.feriado"
           (click)="selecionarDia(dia)">
           <div class="dia-numero">{{ dia.numero }}</div>
-          <div class="dia-feriado-indicador" *ngIf="dia.feriado" (click)="mostrarFeriado(dia.feriado, $event)" title="{{ dia.feriado }}">🎉</div>
+          <ion-icon *ngIf="dia.feriado" name="gift-outline" class="dia-feriado-indicador" (click)="mostrarFeriado(dia.feriado, $event)" title="{{ dia.feriado }}"></ion-icon>
           <div class="dia-tarefas">
             <div *ngIf="dia.tarefas.length > 0" class="tarefas-indicador">
               <span *ngIf="dia.tarefasAtraso > 0" class="tarefas-atraso">{{ dia.tarefasAtraso }}</span>

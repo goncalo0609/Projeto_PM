@@ -55,7 +55,7 @@
         *ngFor="let projeto of projetosFiltrados" 
         class="custom-list-item projeto-item"
         lines="full">
-        <ion-icon name="folder" slot="start" color="secondary"></ion-icon>
+        <ion-icon name="folder-outline" slot="start" color="secondary"></ion-icon>
         <ion-label>
           <h2>{{ projeto.nome }}</h2>
           <p>{{ obterNomeCategoria(projeto.categoriaId) }}</p>
@@ -81,7 +81,7 @@
   <!-- Botão flutuante para adicionar novo projeto -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button color="secondary" (click)="adicionarProjeto()">
-      <ion-icon name="add"></ion-icon>
+      <ion-icon name="add-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 </ion-content>

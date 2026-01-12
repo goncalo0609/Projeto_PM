@@ -24,7 +24,7 @@
           <h2>Categorias</h2>
           <p>Gerir categorias de projetos</p>
         </ion-label>
-        <ion-badge slot="end" class="category-badge-escola">Nova</ion-badge>
+        <ion-badge *ngIf="totalCategorias > 0" slot="end" color="primary">{{ totalCategorias }}</ion-badge>
       </ion-item>
 
       <ion-item button (click)="navegarParaProjetos()" class="custom-list-item">
@@ -33,7 +33,7 @@
           <h2>Projetos</h2>
           <p>Gerir projetos e tarefas</p>
         </ion-label>
-        <ion-badge slot="end" class="category-badge-trabalho">Ativo</ion-badge>
+        <ion-badge *ngIf="totalProjetos > 0" slot="end" color="secondary">{{ totalProjetos }}</ion-badge>
       </ion-item>
 
       <ion-item button (click)="navegarParaTarefas()" class="custom-list-item">
@@ -42,7 +42,7 @@
           <h2>Tarefas</h2>
           <p>Ver e gerir todas as tarefas</p>
         </ion-label>
-        <ion-badge slot="end" class="badge-atraso">3</ion-badge>
+        <ion-badge *ngIf="totalTarefas > 0" slot="end" [color]="tarefasAtraso > 0 ? 'danger' : 'success'">{{ totalTarefas }}</ion-badge>
       </ion-item>
 
       <ion-item button (click)="navegarParaCalendario()" class="custom-list-item">
