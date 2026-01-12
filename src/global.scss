@@ -43,17 +43,99 @@
  */
 
 /**
+ * Fontes Customizadas
+ * Define as fontes personalizadas da aplicação
+ * Para adicionar novas fontes, coloca os ficheiros em src/assets/fonts/
+ * e adiciona um @font-face para cada variante (normal, bold, italic, etc.)
+ * 
+ * INSTRUÇÕES:
+ * 1. Adiciona os ficheiros de fonte em src/assets/fonts/
+ * 2. Descomenta e atualiza os @font-face abaixo com os nomes e caminhos corretos
+ * 3. Atualiza o font-family no html e body para usar a tua fonte
+ */
+
+/* Exemplo de @font-face (comentado até adicionares os ficheiros de fonte):
+@font-face {
+  font-family: 'CustomFont';
+  src: url('./assets/fonts/CustomFont-Regular.woff2') format('woff2'),
+       url('./assets/fonts/CustomFont-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'CustomFont';
+  src: url('./assets/fonts/CustomFont-Bold.woff2') format('woff2'),
+       url('./assets/fonts/CustomFont-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'CustomFont';
+  src: url('./assets/fonts/CustomFont-Italic.woff2') format('woff2'),
+       url('./assets/fonts/CustomFont-Italic.woff') format('woff');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+*/
+
+/**
  * Formatações Globais
  */
 html {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* Usa Outfit do Google Fonts (carregado via CDN no index.html) */
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
 }
 
 body {
   margin: 0;
   padding: 0;
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Aplica a fonte Outfit usando a variável CSS do Ionic */
+:root {
+  --ion-font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Força a fonte em todos os elementos */
+* {
+  font-family: var(--ion-font-family) !important;
+}
+
+ion-content,
+ion-header,
+ion-toolbar,
+ion-title,
+ion-label,
+ion-item,
+ion-button,
+h1, h2, h3, h4, h5, h6,
+p, span, div,
+button, input, textarea, select {
+  font-family: var(--ion-font-family) !important;
+}
+
+/* Garante que o header/toolbar mantém a altura correta */
+ion-header {
+  min-height: 56px;
+}
+
+ion-toolbar {
+  min-height: 56px;
+  --min-height: 56px;
+  padding-top: env(safe-area-inset-top);
+}
+
+ion-title {
+  line-height: 1.2;
+  padding: 0 16px;
 }
 
 /**
