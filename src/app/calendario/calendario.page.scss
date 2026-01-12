@@ -1,0 +1,332 @@
+/**
+ * Estilos para a página de calendário
+ */
+
+// Spinner centralizado enquanto carrega
+.spinner-center {
+  display: block;
+  margin: 50% auto;
+}
+
+// Container principal do calendário
+.calendario-container {
+  padding: 16px;
+}
+
+// Cabeçalho do calendário com navegação
+.calendario-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding: 0 8px;
+
+  .mes-ano {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--ion-color-dark);
+    margin: 0;
+    flex: 1;
+    text-align: center;
+  }
+
+  ion-button {
+    --color: var(--ion-color-primary);
+  }
+}
+
+// Nomes dos dias da semana
+.dias-semana {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 8px;
+
+  .dia-semana-nome {
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ion-color-medium);
+    padding: 8px 4px;
+  }
+}
+
+// Grid do calendário
+.calendario-grid {
+  .calendario-semana {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-bottom: 4px;
+  }
+
+  .calendario-dia {
+    aspect-ratio: 1;
+    min-height: 50px;
+    border: 1px solid var(--ion-color-light);
+    border-radius: 8px;
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background: var(--ion-color-light);
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    // Dia de outro mês
+    &:not(.dia-mes-atual) {
+      opacity: 0.4;
+      background: transparent;
+      cursor: default;
+    }
+
+    // Dia do mês atual
+    &.dia-mes-atual {
+      background: var(--ion-background-color);
+      cursor: pointer;
+
+      &:hover {
+        background: var(--ion-color-light);
+        transform: scale(1.05);
+      }
+    }
+
+    // Dia de hoje
+    &.dia-hoje {
+      border: 2px solid var(--ion-color-primary);
+      background: var(--ion-color-primary-tint);
+
+      .dia-numero {
+        font-weight: 700;
+        color: var(--ion-color-primary);
+      }
+    }
+
+    // Dia selecionado
+    &.dia-selecionado {
+      background: var(--ion-color-primary-tint);
+      border-color: var(--ion-color-primary);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    // Dia com tarefas
+    &.dia-com-tarefas {
+      border-color: var(--ion-color-success);
+    }
+
+    // Dia com tarefas em atraso
+    &.dia-com-atraso {
+      border-color: var(--ion-color-danger);
+      background: var(--ion-color-danger-tint);
+    }
+
+    .dia-numero {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ion-color-dark);
+      margin-bottom: 2px;
+    }
+
+    .dia-tarefas {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+
+      .tarefas-indicador {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+        font-size: 10px;
+        font-weight: 600;
+
+        .tarefas-atraso {
+          color: var(--ion-color-danger);
+          background: var(--ion-color-danger);
+          color: white;
+          border-radius: 8px;
+          padding: 1px 4px;
+          min-width: 16px;
+          text-align: center;
+        }
+
+        .tarefas-total {
+          color: var(--ion-color-success);
+        }
+      }
+    }
+  }
+}
+
+// Overlay para os detalhes
+.detalhes-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+// Painel de detalhes
+.detalhes-painel {
+  background: var(--ion-background-color);
+  border-radius: 16px 16px 0 0;
+  width: 100%;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.3s ease;
+
+  .detalhes-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    border-bottom: 1px solid var(--ion-color-light);
+
+    h2 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--ion-color-dark);
+      margin: 0;
+    }
+
+    ion-button {
+      --color: var(--ion-color-medium);
+    }
+  }
+
+  .detalhes-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+
+    .empty-tarefas {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--ion-color-medium);
+
+      .empty-icon {
+        font-size: 64px;
+        margin-bottom: 16px;
+        opacity: 0.5;
+        color: var(--ion-color-success);
+      }
+
+      p {
+        font-size: 16px;
+        margin: 0;
+      }
+    }
+
+    .tarefas-list {
+      background: transparent;
+
+      .tarefa-item {
+        --padding-start: 16px;
+        --padding-end: 16px;
+        --min-height: 70px;
+        margin-bottom: 8px;
+        border-radius: 8px;
+        border: 1px solid var(--ion-color-light);
+
+        .tarefa-imagem-container {
+          width: 50px;
+          height: 50px;
+          margin-right: 12px;
+          border-radius: 8px;
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: var(--ion-color-light);
+          flex-shrink: 0;
+
+          .tarefa-imagem {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+          }
+        }
+
+        ion-label {
+          h2 {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--ion-color-dark);
+            margin-bottom: 4px;
+          }
+
+          p {
+            font-size: 13px;
+            color: var(--ion-color-medium);
+            margin-top: 0;
+            margin-bottom: 6px;
+            line-height: 1.3;
+          }
+
+          .tarefa-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 11px;
+            color: var(--ion-color-medium);
+            margin-top: 4px;
+
+            .tarefa-projeto {
+              display: flex;
+              align-items: center;
+              gap: 4px;
+
+              ion-icon {
+                font-size: 12px;
+              }
+            }
+
+            .badge-atraso {
+              font-size: 9px;
+              font-weight: 600;
+            }
+          }
+        }
+
+        &.tarefa-atraso {
+          border-color: var(--ion-color-danger-tint);
+
+          ion-label h2 {
+            color: var(--ion-color-danger);
+          }
+        }
+      }
+    }
+  }
+}
+
+// Animações
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}

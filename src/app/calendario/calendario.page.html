@@ -4,6 +4,11 @@
       <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
     <ion-title>Calendário</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="irParaHoje()">
+        <ion-icon slot="icon-only" name="today-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -14,7 +19,93 @@
     </ion-toolbar>
   </ion-header>
 
-  <div class="ion-padding">
-    <p>Calendário de tarefas será implementado aqui.</p>
+  <!-- Loading spinner enquanto carrega dados -->
+  <ion-spinner *ngIf="carregando" name="crescent" class="spinner-center"></ion-spinner>
+
+  <!-- Calendário -->
+  <div *ngIf="!carregando" class="calendario-container">
+    <!-- Cabeçalho do calendário com navegação -->
+    <div class="calendario-header">
+      <ion-button fill="clear" (click)="mesAnterior()">
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+      <h2 class="mes-ano">{{ obterNomeMesAno() }}</h2>
+      <ion-button fill="clear" (click)="mesSeguinte()">
+        <ion-icon slot="icon-only" name="chevron-forward-outline"></ion-icon>
+      </ion-button>
+    </div>
+
+    <!-- Nomes dos dias da semana -->
+    <div class="dias-semana">
+      <div *ngFor="let dia of diasSemana" class="dia-semana-nome">{{ dia }}</div>
+    </div>
+
+    <!-- Grid do calendário -->
+    <div class="calendario-grid">
+      <div *ngFor="let semana of semanas" class="calendario-semana">
+        <div
+          *ngFor="let dia of semana"
+          class="calendario-dia"
+          [class.dia-mes-atual]="dia.ehMesAtual"
+          [class.dia-hoje]="dia.ehHoje"
+          [class.dia-selecionado]="diaSelecionado === dia"
+          [class.dia-com-tarefas]="dia.tarefas.length > 0"
+          [class.dia-com-atraso]="dia.tarefasAtraso > 0"
+          (click)="selecionarDia(dia)">
+          <div class="dia-numero">{{ dia.numero }}</div>
+          <div class="dia-tarefas">
+            <div *ngIf="dia.tarefas.length > 0" class="tarefas-indicador">
+              <span *ngIf="dia.tarefasAtraso > 0" class="tarefas-atraso">{{ dia.tarefasAtraso }}</span>
+              <span class="tarefas-total">{{ dia.tarefas.length }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Painel de detalhes do dia selecionado -->
+  <div *ngIf="diaSelecionado" class="detalhes-overlay" (click)="fecharDetalhes()">
+    <div class="detalhes-painel" (click)="$event.stopPropagation()">
+      <div class="detalhes-header">
+        <h2>Tarefas do dia {{ formatarData(diaSelecionado.data) }}</h2>
+        <ion-button fill="clear" (click)="fecharDetalhes()">
+          <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+        </ion-button>
+      </div>
+      <div class="detalhes-content">
+        <div *ngIf="diaSelecionado.tarefas.length === 0" class="empty-tarefas">
+          <ion-icon name="checkmark-circle-outline" class="empty-icon"></ion-icon>
+          <p>Nenhuma tarefa neste dia</p>
+        </div>
+        <ion-list *ngIf="diaSelecionado.tarefas.length > 0" class="tarefas-list">
+          <ion-item
+            *ngFor="let tarefa of diaSelecionado.tarefas"
+            class="tarefa-item"
+            [class.tarefa-atraso]="tarefa.emAtraso"
+            lines="full">
+            <div *ngIf="tarefa.imagem; else iconDefault" slot="start" class="tarefa-imagem-container">
+              <img [src]="tarefa.imagem" alt="Imagem da tarefa" class="tarefa-imagem" />
+            </div>
+            <ng-template #iconDefault>
+              <ion-icon name="document-text" slot="start" color="success"></ion-icon>
+            </ng-template>
+            <ion-label>
+              <h2>{{ tarefa.titulo }}</h2>
+              <p *ngIf="tarefa.descricao">{{ tarefa.descricao }}</p>
+              <div class="tarefa-meta">
+                <span class="tarefa-projeto">
+                  <ion-icon name="folder-outline" size="small"></ion-icon>
+                  {{ obterNomeProjeto(tarefa.projetoId) }}
+                </span>
+                <ion-badge *ngIf="tarefa.emAtraso" color="danger" class="badge-atraso">
+                  Em Atraso
+                </ion-badge>
+              </div>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+    </div>
   </div>
 </ion-content>
