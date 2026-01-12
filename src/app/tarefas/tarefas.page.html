@@ -14,7 +14,65 @@
     </ion-toolbar>
   </ion-header>
 
-  <div class="ion-padding">
-    <p>Gestão de tarefas será implementada aqui.</p>
+  <!-- Loading spinner enquanto carrega dados -->
+  <ion-spinner *ngIf="carregando" name="crescent" class="spinner-center"></ion-spinner>
+
+  <!-- Lista de tarefas -->
+  <div *ngIf="!carregando">
+    <!-- Mensagem quando não há tarefas -->
+    <div *ngIf="tarefas.length === 0" class="ion-padding empty-state">
+      <ion-icon name="list-outline" class="empty-icon"></ion-icon>
+      <h2>Nenhuma tarefa</h2>
+      <p>Adicione uma nova tarefa para começar a organizar o seu trabalho.</p>
+    </div>
+
+    <!-- Lista de tarefas -->
+    <ion-list *ngIf="tarefas.length > 0" class="custom-list">
+      <ion-item 
+        *ngFor="let tarefa of tarefas" 
+        class="custom-list-item tarefa-item"
+        [class.tarefa-atraso]="tarefa.emAtraso"
+        lines="full">
+        <ion-icon name="document-text" slot="start" color="success"></ion-icon>
+        <ion-label>
+          <h2>{{ tarefa.titulo }}</h2>
+          <p *ngIf="tarefa.descricao">{{ tarefa.descricao }}</p>
+          <div class="tarefa-meta">
+            <span class="tarefa-projeto">
+              <ion-icon name="folder-outline" size="small"></ion-icon>
+              {{ obterNomeProjeto(tarefa.projetoId) }}
+            </span>
+            <span class="tarefa-data">
+              <ion-icon name="calendar-outline" size="small"></ion-icon>
+              {{ formatarData(tarefa.dataLimite) }}
+            </span>
+            <ion-badge *ngIf="tarefa.emAtraso" color="danger" class="badge-atraso">
+              Em Atraso
+            </ion-badge>
+          </div>
+        </ion-label>
+        <ion-buttons slot="end">
+          <ion-button 
+            fill="clear" 
+            color="primary" 
+            (click)="editarTarefa(tarefa)">
+            <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+          </ion-button>
+          <ion-button 
+            fill="clear" 
+            color="danger" 
+            (click)="confirmarEliminarTarefa(tarefa)">
+            <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+    </ion-list>
   </div>
+
+  <!-- Botão flutuante para adicionar nova tarefa -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="success" (click)="adicionarTarefa()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

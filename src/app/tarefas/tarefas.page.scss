@@ -1,0 +1,131 @@
+﻿/**
+ * Estilos para a pÃ¡gina de gestÃ£o de tarefas
+ */
+
+// Spinner centralizado enquanto carrega
+.spinner-center {
+  display: block;
+  margin: 50% auto;
+}
+
+// Estado vazio (quando nÃ£o hÃ¡ tarefas)
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--ion-color-medium);
+
+  .empty-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+
+  h2 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--ion-color-dark);
+  }
+
+  p {
+    font-size: 14px;
+    line-height: 1.5;
+    opacity: 0.7;
+  }
+}
+
+// Estilos para os itens da lista de tarefas
+.tarefa-item {
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --min-height: 80px;
+
+  ion-label {
+    h2 {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--ion-color-dark);
+      margin-bottom: 4px;
+    }
+
+    p {
+      font-size: 14px;
+      color: var(--ion-color-medium);
+      margin-top: 0;
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    .tarefa-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+      color: var(--ion-color-medium);
+      margin-top: 4px;
+
+      .tarefa-projeto,
+      .tarefa-data {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+
+        ion-icon {
+          font-size: 14px;
+        }
+      }
+
+      .badge-atraso {
+        margin-left: auto;
+        font-size: 10px;
+        font-weight: 600;
+      }
+    }
+  }
+
+  // EspaÃ§amento entre botÃµes de aÃ§Ã£o
+  ion-buttons {
+    margin-left: 8px;
+  }
+
+  // Hover effect (em dispositivos com rato)
+  &:hover {
+    --background: var(--ion-color-light);
+  }
+
+  // Estilo especial para tarefas em atraso
+  &.tarefa-atraso {
+    --border-color: var(--ion-color-danger-tint);
+    
+    ion-label h2 {
+      color: var(--ion-color-danger);
+    }
+  }
+}
+
+// Estilos para o botÃ£o flutuante
+ion-fab-button {
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+// Ajustes de espaÃ§amento da lista
+.custom-list {
+  margin-top: 8px;
+}
+
+// AnimaÃ§Ã£o suave para os itens
+.tarefa-item {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -61,9 +61,9 @@ export class TarefaService {
   async getAll(): Promise<Tarefa[]> {
     try {
       const tarefas = await this.storage.get(this.STORAGE_KEY);
-      const tarefasArray = tarefas || [];
+      const tarefasArray: Tarefa[] = tarefas || [];
       // Calcula emAtraso para todas as tarefas
-      return tarefasArray.map(tarefa => ({
+      return tarefasArray.map((tarefa: Tarefa) => ({
         ...tarefa,
         emAtraso: this.estaEmAtraso(tarefa.dataLimite)
       }));
@@ -148,8 +148,8 @@ export class TarefaService {
         return false;
       }
 
-      const tarefas = await this.storage.get(this.STORAGE_KEY) || [];
-      const index = tarefas.findIndex(t => t.id === tarefa.id);
+      const tarefas: Tarefa[] = await this.storage.get(this.STORAGE_KEY) || [];
+      const index = tarefas.findIndex((t: Tarefa) => t.id === tarefa.id);
       
       if (index === -1) {
         return false;
@@ -176,8 +176,8 @@ export class TarefaService {
    */
   async delete(id: string): Promise<boolean> {
     try {
-      const tarefas = await this.storage.get(this.STORAGE_KEY) || [];
-      const tarefasFiltradas = tarefas.filter(t => t.id !== id);
+      const tarefas: Tarefa[] = await this.storage.get(this.STORAGE_KEY) || [];
+      const tarefasFiltradas = tarefas.filter((t: Tarefa) => t.id !== id);
       
       if (tarefas.length === tarefasFiltradas.length) {
         return false; // Tarefa não encontrada
