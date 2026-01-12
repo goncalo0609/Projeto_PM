@@ -83,6 +83,8 @@
             *ngFor="let tarefa of diaSelecionado.tarefas"
             class="tarefa-item"
             [class.tarefa-atraso]="tarefa.emAtraso"
+            button
+            (click)="mostrarOpcoesTarefa(tarefa, $event)"
             lines="full">
             <div *ngIf="tarefa.imagem; else iconDefault" slot="start" class="tarefa-imagem-container">
               <img [src]="tarefa.imagem" alt="Imagem da tarefa" class="tarefa-imagem" />
@@ -103,6 +105,7 @@
                 </ion-badge>
               </div>
             </ion-label>
+            <ion-icon name="chevron-forward-outline" slot="end" color="medium"></ion-icon>
           </ion-item>
         </ion-list>
       </div>

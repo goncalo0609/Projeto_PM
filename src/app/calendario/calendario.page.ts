@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AlertController, ActionSheetController } from '@ionic/angular';
 import { TarefaService } from '../services/tarefa.service';
 import { ProjetoService } from '../services/projeto.service';
 import { Tarefa } from '../models/tarefa.model';
@@ -62,7 +64,10 @@ export class CalendarioPage implements OnInit {
 
   constructor(
     private tarefaService: TarefaService,
-    private projetoService: ProjetoService
+    private projetoService: ProjetoService,
+    private router: Router,
+    private alertController: AlertController,
+    private actionSheetController: ActionSheetController
   ) {}
 
   /**
@@ -254,5 +259,131 @@ export class CalendarioPage implements OnInit {
   obterNomeProjeto(projetoId: string): string {
     const projeto = this.projetos.find(proj => proj.id === projetoId);
     return projeto ? projeto.nome : 'Sem projeto';
+  }
+
+  /**
+   * Abre um ActionSheet com opções para a tarefa (visualizar detalhes, editar)
+   * @param tarefa - Tarefa selecionada
+   * @param event - Evento do clique (para prevenir propagação)
+   */
+  async mostrarOpcoesTarefa(tarefa: Tarefa, event?: Event) {
+    if (event) {
+      event.stopPropagation();
+    }
+
+    const actionSheet = await this.actionSheetController.create({
+      header: tarefa.titulo,
+      buttons: [
+        {
+          text: 'Ver Detalhes',
+          icon: 'eye-outline',
+          handler: () => {
+            this.verDetalhesTarefa(tarefa);
+          }
+        },
+        {
+          text: 'Editar',
+          icon: 'create-outline',
+          handler: () => {
+            this.navegarParaEditarTarefa(tarefa);
+          }
+        },
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        }
+      ]
+    });
+
+    await actionSheet.present();
+  }
+
+  /**
+   * Mostra os detalhes completos de uma tarefa
+   * @param tarefa - Tarefa a visualizar
+   */
+  async verDetalhesTarefa(tarefa: Tarefa) {
+    const projetoNome = this.obterNomeProjeto(tarefa.projetoId);
+    const dataFormatada = this.formatarData(new Date(tarefa.dataLimite));
+    
+    const inputs: any[] = [
+      {
+        name: 'titulo',
+        type: 'text',
+        value: tarefa.titulo,
+        attributes: {
+          readonly: true
+        },
+        placeholder: 'Título'
+      },
+      {
+        name: 'descricao',
+        type: 'textarea',
+        value: tarefa.descricao || 'Sem descrição',
+        attributes: {
+          readonly: true,
+          rows: 3
+        },
+        placeholder: 'Descrição'
+      },
+      {
+        name: 'projeto',
+        type: 'text',
+        value: projetoNome,
+        attributes: {
+          readonly: true
+        },
+        placeholder: 'Projeto'
+      },
+      {
+        name: 'dataLimite',
+        type: 'text',
+        value: dataFormatada,
+        attributes: {
+          readonly: true
+        },
+        placeholder: 'Data Limite'
+      }
+    ];
+
+    let message = '';
+    if (tarefa.emAtraso) {
+      message = '⚠ Tarefa em atraso';
+    }
+
+    const alert = await this.alertController.create({
+      header: 'Detalhes da Tarefa',
+      message: message,
+      inputs: inputs,
+      buttons: [
+        {
+          text: 'Editar',
+          handler: () => {
+            this.navegarParaEditarTarefa(tarefa);
+          }
+        },
+        {
+          text: 'Fechar',
+          role: 'cancel'
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  /**
+   * Navega para a página de tarefas
+   * Nota: A edição completa da tarefa será feita na página de tarefas
+   * Esta função apenas navega para lá
+   * @param tarefa - Tarefa a editar (informação para possível uso futuro)
+   */
+  navegarParaEditarTarefa(tarefa: Tarefa) {
+    // Fecha o painel de detalhes primeiro
+    this.fecharDetalhes();
+    
+    // Navega para a página de tarefas
+    // O utilizador pode então procurar e editar a tarefa lá
+    this.router.navigate(['/tarefas']);
   }
 }
