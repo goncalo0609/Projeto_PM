@@ -60,10 +60,12 @@ export class FeriadoService {
     const anoAtual = ano || new Date().getFullYear();
     const feriadosAno = await this.obterFeriados(anoAtual);
     
-    // Filtra feriados do mês especificado
+    // Filtra feriados do mês especificado (parse da string YYYY-MM-DD diretamente)
     return feriadosAno.filter(feriado => {
-      const dataFeriado = new Date(feriado.date);
-      return dataFeriado.getMonth() + 1 === mes; // getMonth() retorna 0-11
+      // Parse da string YYYY-MM-DD diretamente sem usar Date (evita problemas de timezone)
+      const partes = feriado.date.split('-');
+      const mesFeriado = parseInt(partes[1], 10);
+      return mesFeriado === mes;
     });
   }
 
@@ -76,8 +78,11 @@ export class FeriadoService {
     const ano = data.getFullYear();
     const feriadosAno = await this.obterFeriados(ano);
     
-    // Formata a data para YYYY-MM-DD
-    const dataFormatada = data.toISOString().split('T')[0];
+    // Formata a data para YYYY-MM-DD usando timezone local (evita problemas de UTC)
+    const anoFeriado = data.getFullYear();
+    const mesFeriado = (data.getMonth() + 1).toString().padStart(2, '0');
+    const diaFeriado = data.getDate().toString().padStart(2, '0');
+    const dataFormatada = `${anoFeriado}-${mesFeriado}-${diaFeriado}`;
     
     // Busca o feriado
     const feriado = feriadosAno.find(f => f.date === dataFormatada);

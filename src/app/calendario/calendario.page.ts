@@ -189,8 +189,11 @@ export class CalendarioPage implements OnInit {
         const tarefasDia = this.obterTarefasPorData(data);
         const tarefasAtraso = tarefasDia.filter(t => t.emAtraso).length;
 
-        // Verifica se é feriado
-        const dataFormatada = data.toISOString().split('T')[0];
+        // Verifica se é feriado (formata usando timezone local para evitar problemas de UTC)
+        const anoFeriado = data.getFullYear();
+        const mesFeriado = (data.getMonth() + 1).toString().padStart(2, '0');
+        const diaFeriado = data.getDate().toString().padStart(2, '0');
+        const dataFormatada = `${anoFeriado}-${mesFeriado}-${diaFeriado}`;
         const nomeFeriado = this.feriados.get(dataFormatada) || null;
 
         diasSemana.push({
