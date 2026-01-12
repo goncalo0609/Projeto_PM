@@ -19,7 +19,30 @@
 
   <!-- Lista de projetos -->
   <div *ngIf="!carregando">
+    <!-- Filtro de categorias -->
+    <div class="filtro-container" *ngIf="categorias.length > 0">
+      <ion-segment 
+        [(ngModel)]="categoriaFiltro" 
+        (ionChange)="filtrarPorCategoria($event.detail.value)"
+        class="filtro-categorias">
+        <ion-segment-button value="todos">
+          <ion-label>Todos</ion-label>
+        </ion-segment-button>
+        <ion-segment-button 
+          *ngFor="let categoria of categorias" 
+          [value]="categoria.id">
+          <ion-label>{{ categoria.nome }}</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+
     <!-- Mensagem quando não há projetos -->
+    <div *ngIf="projetosFiltrados.length === 0 && projetos.length > 0" class="ion-padding empty-state">
+      <ion-icon name="folder-outline" class="empty-icon"></ion-icon>
+      <h2>Nenhum projeto nesta categoria</h2>
+      <p>Não há projetos na categoria selecionada.</p>
+    </div>
+
     <div *ngIf="projetos.length === 0" class="ion-padding empty-state">
       <ion-icon name="folder-outline" class="empty-icon"></ion-icon>
       <h2>Nenhum projeto</h2>
@@ -27,9 +50,9 @@
     </div>
 
     <!-- Lista de projetos -->
-    <ion-list *ngIf="projetos.length > 0" class="custom-list">
+    <ion-list *ngIf="projetosFiltrados.length > 0" class="custom-list">
       <ion-item 
-        *ngFor="let projeto of projetos" 
+        *ngFor="let projeto of projetosFiltrados" 
         class="custom-list-item projeto-item"
         lines="full">
         <ion-icon name="folder" slot="start" color="secondary"></ion-icon>

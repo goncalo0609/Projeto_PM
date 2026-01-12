@@ -91,3 +91,49 @@ ion-fab-button {
     transform: translateY(0);
   }
 }
+// Container para o filtro com scroll horizontal
+.filtro-container {
+  margin: 16px;
+  margin-bottom: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  
+  // Mostra a barra de scroll
+  scrollbar-width: thin;
+  
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: var(--ion-color-light);
+    border-radius: 2px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: var(--ion-color-medium);
+    border-radius: 2px;
+  }
+}
+
+// Estilos para o filtro de categorias
+.filtro-categorias {
+  min-width: 100%;
+  display: inline-flex;
+  width: auto;
+  
+  ion-segment-button {
+    // Permite que os botões tenham tamanho baseado no conteúdo
+    flex: 0 0 auto;
+    min-width: auto;
+    
+    ion-label {
+      white-space: nowrap;
+      overflow: visible;
+      text-overflow: clip;
+      padding: 0 12px;
+    }
+  }
+}
+

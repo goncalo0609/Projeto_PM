@@ -19,11 +19,17 @@ export class ProjetosPage implements OnInit {
   /** Array com todos os projetos */
   projetos: Projeto[] = [];
 
+  /** Array com projetos filtrados (exibidos) */
+  projetosFiltrados: Projeto[] = [];
+
   /** Array com todas as categorias */
   categorias: Categoria[] = [];
 
   /** Flag para indicar se está a carregar dados */
   carregando = false;
+
+  /** ID da categoria selecionada no filtro ('todos' = todas) */
+  categoriaFiltro: string = 'todos';
 
   constructor(
     private projetoService: ProjetoService,
@@ -48,11 +54,36 @@ export class ProjetosPage implements OnInit {
       this.carregando = true;
       this.categorias = await this.categoriaService.getAll();
       this.projetos = await this.projetoService.getAll();
+      this.aplicarFiltro();
     } catch (error) {
       console.error('Erro ao carregar dados:', error);
       await this.mostrarToast('Erro ao carregar projetos', 'danger');
     } finally {
       this.carregando = false;
+    }
+  }
+
+  /**
+   * Filtra os projetos por categoria
+   * @param categoriaId - ID da categoria para filtrar ('todos' = todas)
+   */
+  filtrarPorCategoria(categoriaId: string | number | undefined) {
+    this.categoriaFiltro = String(categoriaId || 'todos');
+    this.aplicarFiltro();
+  }
+
+  /**
+   * Aplica o filtro atual aos projetos
+   */
+  aplicarFiltro() {
+    if (this.categoriaFiltro === 'todos') {
+      // Mostrar todos os projetos
+      this.projetosFiltrados = [...this.projetos];
+    } else {
+      // Filtrar por categoria
+      this.projetosFiltrados = this.projetos.filter(
+        projeto => projeto.categoriaId === this.categoriaFiltro
+      );
     }
   }
 
