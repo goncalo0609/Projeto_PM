@@ -51,8 +51,10 @@
           [class.dia-selecionado]="diaSelecionado === dia"
           [class.dia-com-tarefas]="dia.tarefas.length > 0"
           [class.dia-com-atraso]="dia.tarefasAtraso > 0"
+          [class.dia-feriado]="dia.feriado"
           (click)="selecionarDia(dia)">
           <div class="dia-numero">{{ dia.numero }}</div>
+          <div class="dia-feriado-indicador" *ngIf="dia.feriado" (click)="mostrarFeriado(dia.feriado, $event)" title="{{ dia.feriado }}">🎉</div>
           <div class="dia-tarefas">
             <div *ngIf="dia.tarefas.length > 0" class="tarefas-indicador">
               <span *ngIf="dia.tarefasAtraso > 0" class="tarefas-atraso">{{ dia.tarefasAtraso }}</span>

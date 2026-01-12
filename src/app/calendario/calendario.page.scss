@@ -61,6 +61,7 @@
   }
 
   .calendario-dia {
+    position: relative;
     aspect-ratio: 1;
     min-height: 50px;
     border: 1px solid var(--ion-color-light);
@@ -121,6 +122,16 @@
       background: var(--ion-color-danger-tint);
     }
 
+    // Dia com feriado
+    &.dia-feriado {
+      background-color: rgba(var(--ion-color-warning-rgb), 0.15) !important;
+      
+      .dia-numero {
+        color: var(--ion-color-warning);
+        font-weight: bold;
+      }
+    }
+
     .dia-numero {
       font-size: 14px;
       font-weight: 500;
@@ -153,12 +164,45 @@
           text-align: center;
         }
 
-        .tarefas-total {
-          color: var(--ion-color-success);
-        }
+      .tarefas-total {
+        color: var(--ion-color-success);
+      }
+    }
+
+    .dia-feriado-indicador {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      font-size: 12px;
+      line-height: 1;
+      z-index: 100;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 50%;
+      background: rgba(var(--ion-color-warning-rgb), 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      min-width: 22px;
+      min-height: 22px;
+      transition: transform 0.2s ease, background 0.2s ease;
+      pointer-events: auto;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+
+      &:hover {
+        transform: scale(1.2);
+        background: rgba(var(--ion-color-warning-rgb), 0.4);
+      }
+
+      &:active {
+        transform: scale(0.9);
       }
     }
   }
+}
 }
 
 // Overlay para os detalhes

@@ -159,7 +159,7 @@ export class SqliteService {
   async closeDatabase(): Promise<void> {
     if (this.db) {
       await this.db.close();
-      await this.sqlite.closeConnection(this.DB_NAME);
+      await this.sqlite.closeConnection(this.DB_NAME, false);
       this.db = null;
       this.isInitialized = false;
     }

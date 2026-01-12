@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AlertController, ActionSheetController } from '@ionic/angular';
 import { TarefaService } from '../services/tarefa.service';
 import { ProjetoService } from '../services/projeto.service';
+import { FeriadoService } from '../services/feriado.service';
 import { Tarefa } from '../models/tarefa.model';
 import { Projeto } from '../models/projeto.model';
 
@@ -22,6 +23,8 @@ interface DiaCalendario {
   tarefas: Tarefa[];
   /** Quantidade de tarefas em atraso */
   tarefasAtraso: number;
+  /** Nome do feriado (se for feriado) */
+  feriado?: string | null;
 }
 
 /**
@@ -62,9 +65,13 @@ export class CalendarioPage implements OnInit {
     'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
   ];
 
+  /** Mapa de feriados (data -> nome do feriado) */
+  feriados: Map<string, string> = new Map();
+
   constructor(
     private tarefaService: TarefaService,
     private projetoService: ProjetoService,
+    private feriadoService: FeriadoService,
     private router: Router,
     private alertController: AlertController,
     private actionSheetController: ActionSheetController
@@ -75,6 +82,7 @@ export class CalendarioPage implements OnInit {
    */
   async ngOnInit() {
     await this.carregarDados();
+    await this.carregarFeriados();
   }
 
   /**
@@ -90,6 +98,27 @@ export class CalendarioPage implements OnInit {
       console.error('Erro ao carregar dados:', error);
     } finally {
       this.carregando = false;
+    }
+  }
+
+  /**
+   * Carrega os feriados do ano atual
+   */
+  async carregarFeriados() {
+    try {
+      const ano = this.dataAtual.getFullYear();
+      const feriados = await this.feriadoService.obterFeriados(ano);
+      
+      // Cria um mapa com data -> nome do feriado
+      this.feriados.clear();
+      feriados.forEach(feriado => {
+        this.feriados.set(feriado.date, feriado.localName);
+      });
+      
+      // Regenera o calendário para incluir os feriados
+      this.gerarCalendario();
+    } catch (error) {
+      console.error('Erro ao carregar feriados:', error);
     }
   }
 
@@ -160,13 +189,18 @@ export class CalendarioPage implements OnInit {
         const tarefasDia = this.obterTarefasPorData(data);
         const tarefasAtraso = tarefasDia.filter(t => t.emAtraso).length;
 
+        // Verifica se é feriado
+        const dataFormatada = data.toISOString().split('T')[0];
+        const nomeFeriado = this.feriados.get(dataFormatada) || null;
+
         diasSemana.push({
           data: data,
           numero: numeroDia,
           ehMesAtual: ehMesAtual,
           ehHoje: ehHoje,
           tarefas: tarefasDia,
-          tarefasAtraso: tarefasAtraso
+          tarefasAtraso: tarefasAtraso,
+          feriado: nomeFeriado
         });
       }
 
@@ -200,17 +234,31 @@ export class CalendarioPage implements OnInit {
   /**
    * Navega para o mês anterior
    */
-  mesAnterior() {
+  async mesAnterior() {
+    const anoAtual = this.dataAtual.getFullYear();
     this.dataAtual = new Date(this.dataAtual.getFullYear(), this.dataAtual.getMonth() - 1, 1);
-    this.gerarCalendario();
+    
+    // Carrega feriados se mudar de ano
+    if (this.dataAtual.getFullYear() !== anoAtual) {
+      await this.carregarFeriados();
+    } else {
+      this.gerarCalendario();
+    }
   }
 
   /**
    * Navega para o mês seguinte
    */
-  mesSeguinte() {
+  async mesSeguinte() {
+    const anoAtual = this.dataAtual.getFullYear();
     this.dataAtual = new Date(this.dataAtual.getFullYear(), this.dataAtual.getMonth() + 1, 1);
-    this.gerarCalendario();
+    
+    // Carrega feriados se mudar de ano
+    if (this.dataAtual.getFullYear() !== anoAtual) {
+      await this.carregarFeriados();
+    } else {
+      this.gerarCalendario();
+    }
   }
 
   /**
@@ -385,5 +433,34 @@ export class CalendarioPage implements OnInit {
     // Navega para a página de tarefas
     // O utilizador pode então procurar e editar a tarefa lá
     this.router.navigate(['/tarefas']);
+  }
+
+  /**
+   * Mostra o nome do feriado num alert
+   * @param nomeFeriado - Nome do feriado a exibir
+   * @param event - Evento do clique (para prevenir propagação)
+   */
+  async mostrarFeriado(nomeFeriado: string | null, event?: Event) {
+    if (event) {
+      event.stopPropagation(); // Previne que o clique selecione o dia
+      event.preventDefault(); // Previne comportamento padrão
+    }
+
+    if (!nomeFeriado) {
+      return;
+    }
+
+    const alert = await this.alertController.create({
+      header: 'Feriado',
+      message: nomeFeriado,
+      buttons: [
+        {
+          text: 'Fechar',
+          role: 'cancel'
+        }
+      ]
+    });
+
+    await alert.present();
   }
 }
